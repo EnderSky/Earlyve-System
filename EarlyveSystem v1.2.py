@@ -21,7 +21,7 @@ import sys
 ##   - Functions: OnSubmit, OnHelp, OnAbout, OnUpdateLog, On Exit,
 ##     OnEarlyLeave, OnLatecomers
 ##   - Contents of About, Help and Update Log are read from external txt files
-##   - Added self.Fit() to ABout, Help and Update Log Dialogs
+##   - Added self.Fit() to About, Help and Update Log Dialogs
 ##   - Run Code
 ###########################################################################
 
