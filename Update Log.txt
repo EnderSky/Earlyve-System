@@ -1,5 +1,5 @@
 v1.2
-- ABout, Help and Update Log pages are now read from external txt files
+- About, Help and Update Log pages are now read from external txt files
 
 v1.1
 - Updated "About" Page
