@@ -1,0 +1,8 @@
+Features:
+- Allows user to input student ID of students who take early leave from school or are late for school
+- Stores this data into an Excel Workbook
+
+Future Features:
+- Query By Date: Displays all data of a specified date
+- Query By Student ID: Displays all data corresponding to the specified Student ID
+- Allow user to select which Excel workbook to use to store data

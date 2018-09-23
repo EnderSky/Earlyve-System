@@ -1,0 +1,14 @@
+v1.2
+- ABout, Help and Update Log pages are now read from external txt files
+
+v1.1
+- Updated "About" Page
+- Added "Update Log"
+- Fixed confirmation text
+- Now clears text field when data has been submitted
+
+v 1.0
+- Added "About" Page
+- Added "Help" Page
+- Added "Exit Program" Function
+- Added "Enter Student Data" function for both "Early Leave" and "Latecomers"
