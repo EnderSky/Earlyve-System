@@ -1,3 +1,7 @@
+v1.3
+- Changed "File" to "Home"
+- Increased size of window, title and text field
+
 v1.2
 - About, Help and Update Log pages are now read from external txt files
 
