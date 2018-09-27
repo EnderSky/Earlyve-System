@@ -1,0 +1,7 @@
+1. Select appropriate header "Early Leave" or "Latecomers" 
+    followed by "Enter Student Data"
+2. Click the cursor in the "Student ID" text field.
+3. Scan the barcode on the student's ID
+                   OR
+3. Enter the student's ID manually.
+4. Click the submit button.
