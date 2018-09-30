@@ -1,6 +1,7 @@
 v1.4
 - Allows user to specify name of Excel workbook to store data from within the program
 - Now sends emails to form teachers when their student takes early leave or was late for school
+- Increased font of instructions
 
 v1.3
 - Changed "File" to "Home"

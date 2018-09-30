@@ -344,7 +344,7 @@ class HelpDialog ( wx.Dialog ):
                 
                 self.textHelpTitle = wx.StaticText( self, wx.ID_ANY, u"Help", wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
                 self.textHelpTitle.Wrap( -1 )
-                self.textHelpTitle.SetFont( wx.Font( 15, 70, 90, 92, False, wx.EmptyString ) )
+                self.textHelpTitle.SetFont( wx.Font( 25, 70, 90, 92, False, wx.EmptyString ) )
                 
                 bSizerHelp.Add( self.textHelpTitle, 0, wx.ALIGN_LEFT|wx.ALL, 15 )
 
@@ -355,6 +355,7 @@ class HelpDialog ( wx.Dialog ):
                 
                 self.textHelpInstructions = wx.StaticText( self, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
                 self.textHelpInstructions.Wrap( -1 )
+                self.textHelpInstructions.SetFont( wx.Font( 20, 70, 90, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
                 bSizerHelp.Add( self.textHelpInstructions, 0, wx.ALIGN_LEFT|wx.ALL, 10 )
                 
                 self.SetSizer( bSizerHelp )
@@ -422,7 +423,7 @@ class SetFilenameDialog ( wx.Dialog ):
                 
                 bSizerSetFilename = wx.BoxSizer( wx.VERTICAL )
                 
-                self.textSetFilenameTitle = wx.StaticText( self, wx.ID_ANY, u"Help", wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+                self.textSetFilenameTitle = wx.StaticText( self, wx.ID_ANY, u"Set Filename", wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
                 self.textSetFilenameTitle.Wrap( -1 )
                 self.textSetFilenameTitle.SetFont( wx.Font( 15, 70, 90, 92, False, wx.EmptyString ) )
                 
