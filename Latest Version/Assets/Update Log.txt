@@ -1,3 +1,6 @@
+v1.5
+- Made file storage system cleaner
+
 v1.4
 - Allows user to specify name of Excel workbook to store data from within the program
 - Now sends emails to form teachers when their student takes early leave or was late for school
