@@ -35,15 +35,13 @@ class MainFrame ( wx.Frame ):
         def __init__( self, parent ):
                 wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Earlyve System", pos = wx.DefaultPosition, size = wx.Size( 500,400 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
                 
-                self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
-                
-                bSizerMainFrame = wx.BoxSizer( wx.VERTICAL )
-                
-                self.panelMain = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-                bSizerMainFrame.Add( self.panelMain, 0, wx.EXPAND |wx.ALL, 0 )
-                
+                self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+
                 #Initialise mode as "Early Leave"
                 self.mode = "EarlyLeave"
+
+                ## Set up Panel and GUI
+                bSizerMainFrame = wx.BoxSizer( wx.VERTICAL )
                 
                 self.textTitle = wx.StaticText( self, wx.ID_ANY, u"Early Leave", wx.DefaultPosition, wx.DefaultSize, 0 )
                 self.textTitle.Wrap( -1 )
@@ -77,37 +75,38 @@ class MainFrame ( wx.Frame ):
                 self.SetSize(1000,700)
                 self.SetSizer( bSizerMainFrame )
                 self.Layout()
-                
+
+                ## Set up Menubar
                 self.menubarMain = wx.MenuBar( 0 )
                 self.menuHome = wx.Menu()
                 self.menuItemHomeAbout = wx.MenuItem( self.menuHome, wx.ID_ANY, u"About", wx.EmptyString, wx.ITEM_NORMAL )
-                self.menuHome.AppendItem( self.menuItemHomeAbout )
+                self.menuHome.Append( self.menuItemHomeAbout )
                 
                 self.menuItemHomeHelp = wx.MenuItem( self.menuHome, wx.ID_ANY, u"Help", wx.EmptyString, wx.ITEM_NORMAL )
-                self.menuHome.AppendItem( self.menuItemHomeHelp )
+                self.menuHome.Append( self.menuItemHomeHelp )
 
                 self.menuItemHomeSetFilename = wx.MenuItem (self.menuHome, wx.ID_ANY, u"Set Filename", wx.EmptyString, wx.ITEM_NORMAL )
-                self.menuHome.AppendItem( self.menuItemHomeSetFilename )
+                self.menuHome.Append( self.menuItemHomeSetFilename )
                 
                 self.menuItemHomeUpdateLog = wx.MenuItem( self.menuHome, wx.ID_ANY, u"Update Log", wx.EmptyString, wx.ITEM_NORMAL )
-                self.menuHome.AppendItem( self.menuItemHomeUpdateLog )
+                self.menuHome.Append( self.menuItemHomeUpdateLog )
                 
                 self.menuHome.AppendSeparator()
                 
                 self.menuItemHomeExit = wx.MenuItem( self.menuHome, wx.ID_ANY, u"Exit Program", wx.EmptyString, wx.ITEM_NORMAL )
-                self.menuHome.AppendItem( self.menuItemHomeExit )
+                self.menuHome.Append( self.menuItemHomeExit )
                 
                 self.menubarMain.Append( self.menuHome, u"Home" ) 
                 
                 self.menuEarly = wx.Menu()
                 self.menuItemEarlyEnterData = wx.MenuItem( self.menuEarly, wx.ID_ANY, u"Enter Student Data", wx.EmptyString, wx.ITEM_NORMAL )
-                self.menuEarly.AppendItem( self.menuItemEarlyEnterData )
+                self.menuEarly.Append( self.menuItemEarlyEnterData )
                 
                 self.menubarMain.Append( self.menuEarly, u"Early Leave" ) 
                 
                 self.menuLate = wx.Menu()
                 self.menuItemLateEnterData = wx.MenuItem( self.menuLate, wx.ID_ANY, u"Enter Student Data", wx.EmptyString, wx.ITEM_NORMAL )
-                self.menuLate.AppendItem( self.menuItemLateEnterData )
+                self.menuLate.Append( self.menuItemLateEnterData )
                 
                 self.menubarMain.Append( self.menuLate, u"Latecomers" ) 
                 
@@ -252,7 +251,7 @@ class MainFrame ( wx.Frame ):
                         sheet['A' + str(empty)].value = curr_datetime
                         #Set latest row of column B to student ID
                         sheet['B' + str(empty)].value = nric
-                        wb.save('Data Log.xlsx')
+                        wb.save(filename)
 
         def OnAbout( self, event ):
                 #Show About Dialog when About menu item selected
@@ -453,11 +452,15 @@ class SetFilenameDialog ( wx.Dialog ):
 
                 # Connect Events
                 self.buttonSubmit.Bind( wx.EVT_BUTTON, self.OnSubmit )
+                
         def OnSubmit( self, event ):
                 global filename
+
+                #If text field is empty, output an error message
                 if self.textfieldSetFilename.GetValue() == "":
                         self.textConfirmation.SetLabel("Filename field cannot be left blank. Please try again.")
-                else:   #Run Code
+                else:
+                        #Run Code
                         # Get filename from text field
                         filename = f"Assets/{self.textfieldSetFilename.GetValue()}"
                         file = open("Assets/Filename.txt", "w")

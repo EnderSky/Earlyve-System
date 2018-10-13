@@ -1,3 +1,8 @@
+v1.6
+- Made format of datetime in Data Log file more readable
+- Added Query by Student ID function
+- Added Query by Date function
+
 v1.5
 - Made file storage system cleaner
 
