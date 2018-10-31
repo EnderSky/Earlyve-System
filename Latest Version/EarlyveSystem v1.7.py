@@ -650,7 +650,7 @@ class HelpDialog ( wx.Dialog ):
                 
                 self.textHelpInstructions = wx.StaticText( self, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
                 self.textHelpInstructions.Wrap( -1 )
-                self.textHelpInstructions.SetFont( wx.Font( 20, 70, 90, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+                self.textHelpInstructions.SetFont( wx.Font( 13, 70, 90, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
                 bSizerHelp.Add( self.textHelpInstructions, 0, wx.ALIGN_LEFT|wx.ALL, 10 )
                 
                 self.SetSizer( bSizerHelp )
