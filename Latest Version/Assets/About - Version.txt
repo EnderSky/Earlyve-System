@@ -1,3 +1,3 @@
-Earlyve System Version 1.6
+Earlyve System Version 1.7
 - Created by: Jotham Lim -
 Created in wxFormBuilder

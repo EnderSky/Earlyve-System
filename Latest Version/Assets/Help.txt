@@ -1,7 +1,15 @@
+Instructions to Enter Student Data
 1. Select appropriate header "Early Leave" or "Latecomers" 
-    followed by "Enter Student Data"
+   followed by "Enter Student Data"
 2. Click the cursor in the "Student ID" text field.
 3. Scan the barcode on the student's ID
                    OR
 3. Enter the student's ID manually.
+4. Click the submit button.
+
+Instructions to Query Data
+1. Select the appropriate menu header "Early Leave" or "Latecomers"
+   followed by "Query by Student ID" or "Query by Date"
+2. Click the cursor in the text field.
+3. Enter the appropriate data (student ID or date).
 4. Click the submit button.

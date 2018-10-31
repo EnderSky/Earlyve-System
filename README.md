@@ -4,7 +4,7 @@ Repository containing the Earlyve system.
 
 Tracks students who take early leave from school or are late for school.
 
-
+	
 
 ## How to Install
 1. Download Python 3.7.0 from www.python.org
@@ -14,5 +14,5 @@ Tracks students who take early leave from school or are late for school.
 5. Copy and Paste this line into Command Prompt: _pip3 install openpyxl wxpython --user_
 
 ## How to Run
-1. Double click the "Latest Version" Folder
+1. Open the Github Repository Folder followed by "Latest Version".
 2. Double click the EarlyveSystem Python File

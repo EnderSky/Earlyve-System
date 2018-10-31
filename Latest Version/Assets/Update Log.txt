@@ -1,3 +1,7 @@
+v1.7
+- Updated "Help" Instructions
+- Added scrolling window for query information
+
 v1.6
 - Made format of datetime in Data Log file more readable
 - Added Query by Student ID function
