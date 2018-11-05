@@ -1,0 +1,3 @@
+cepy3testing@gmail.com
+(put password here, without brackets)
+smtp.gmail.com

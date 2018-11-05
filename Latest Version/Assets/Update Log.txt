@@ -1,3 +1,11 @@
+v1.8
+- Added email details in a separate, locally stored file
+- Added name and class fields to data log file
+- Now displays class and name of student in "Query by Date" and "Query by Student ID"
+- Added "Query by Name" Function
+- Changed format of confirmation text
+- Added email template in text files separate from code
+
 v1.7
 - Updated "Help" Instructions
 - Added scrolling window for query information

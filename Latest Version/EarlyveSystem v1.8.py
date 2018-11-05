@@ -33,27 +33,27 @@ latecomers_empty = 0
 ## Class MainFrame
 ###########################################################################
 
-class QueryPanel(scrolled.ScrolledPanel):
+class ScrollPanel(scrolled.ScrolledPanel):
 
-    def __init__(self, parent, text):
+    def __init__(self, parent, title, text):
 
         scrolled.ScrolledPanel.__init__(self, parent, -1)
 
         ## Set up Panel and GUI
-        bSizerQuery = wx.BoxSizer(wx.VERTICAL)
+        bSizerPanel = wx.BoxSizer(wx.VERTICAL)
         
-        self.textQueryTitle = wx.StaticText( self, wx.ID_ANY, u"Query Info", wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
-        self.textQueryTitle.Wrap( -1 )
-        self.textQueryTitle.SetFont( wx.Font( 25, 70, 90, 92, False, wx.EmptyString ) )
-        bSizerQuery.Add( self.textQueryTitle, 0, wx.ALIGN_LEFT|wx.ALL, 15 )
+        textTitle = wx.StaticText( self, wx.ID_ANY, title, wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
+        textTitle.Wrap( -1 )
+        textTitle.SetFont( wx.Font( 25, 70, 90, 92, False, wx.EmptyString ) )
+        bSizerPanel.Add( textTitle, 0, wx.ALIGN_LEFT|wx.ALL, 15 )
         
-        self.textQueryInfo = wx.StaticText( self, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.textQueryInfo.Wrap( -1 )
-        self.textQueryInfo.SetFont( wx.Font( 15, 70, 90, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
-        bSizerQuery.Add( self.textQueryInfo, 0, wx.ALIGN_LEFT|wx.ALL|wx.EXPAND, 10 )
+        textInfo = wx.StaticText( self, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
+        textInfo.Wrap( -1 )
+        textInfo.SetFont( wx.Font( 12, 70, 90, wx.FONTWEIGHT_NORMAL, False, wx.EmptyString ) )
+        bSizerPanel.Add( textInfo, 0, wx.ALIGN_LEFT|wx.ALL|wx.EXPAND, 10 )
 
         #Format panel and set up scrolling
-        self.SetSizer(bSizerQuery)
+        self.SetSizer(bSizerPanel)
         self.SetupScrolling()
         self.Layout()
 
@@ -138,6 +138,9 @@ class MainFrame ( wx.Frame ):
 
                 self.menuItemEarlyQueryDate = wx.MenuItem( self.menuEarly, wx.ID_ANY, u"Query by Date", wx.EmptyString, wx.ITEM_NORMAL )
                 self.menuEarly.Append( self.menuItemEarlyQueryDate )
+
+                self.menuItemEarlyQueryName = wx.MenuItem( self.menuEarly, wx.ID_ANY, u"Query by Name", wx.EmptyString, wx.ITEM_NORMAL )
+                self.menuEarly.Append( self.menuItemEarlyQueryName )
                 
                 self.menubarMain.Append( self.menuEarly, u"Early Leave" ) 
                 
@@ -150,6 +153,9 @@ class MainFrame ( wx.Frame ):
 
                 self.menuItemLateQueryDate = wx.MenuItem( self.menuLate, wx.ID_ANY, u"Query by Date", wx.EmptyString, wx.ITEM_NORMAL )
                 self.menuLate.Append( self.menuItemLateQueryDate )
+
+                self.menuItemLateQueryName = wx.MenuItem( self.menuLate, wx.ID_ANY, u"Query by Name", wx.EmptyString, wx.ITEM_NORMAL )
+                self.menuLate.Append( self.menuItemLateQueryName )
                 
                 self.menubarMain.Append( self.menuLate, u"Latecomers" ) 
                 
@@ -168,9 +174,11 @@ class MainFrame ( wx.Frame ):
                 self.Bind( wx.EVT_MENU, self.OnEarlyLeave, id = self.menuItemEarlyEnterData.GetId() )
                 self.Bind( wx.EVT_MENU, self.OnEarlyLeaveQueryID, id = self.menuItemEarlyQueryID.GetId() )
                 self.Bind( wx.EVT_MENU, self.OnEarlyLeaveQueryDate, id = self.menuItemEarlyQueryDate.GetId() )
+                self.Bind( wx.EVT_MENU, self.OnEarlyLeaveQueryName, id = self.menuItemEarlyQueryName.GetId() )
                 self.Bind( wx.EVT_MENU, self.OnLatecomers, id = self.menuItemLateEnterData.GetId() )
                 self.Bind( wx.EVT_MENU, self.OnLatecomersQueryID, id = self.menuItemLateQueryID.GetId() )
                 self.Bind( wx.EVT_MENU, self.OnLatecomersQueryDate, id = self.menuItemLateQueryDate.GetId() )
+                self.Bind( wx.EVT_MENU, self.OnLatecomersQueryName, id = self.menuItemLateQueryName.GetId() )
         
         def __del__( self ):
                 pass
@@ -231,11 +239,26 @@ class MainFrame ( wx.Frame ):
                         name_student = selected_row["Name"]
 
                         #Var text allows message in email to change depending on whether the student took early leave or was late for school
+                        #if self.mode == "EarlyLeave":
+                        #        var_text = "has left school early"
+                        #elif self.mode == "Latecomers":
+                        #        var_text = "was late for school"
+                        #text = f"Dear {selected_row['Name of Form Teacher 1']} and {selected_row['Name of Form Teacher 2']}, \n\nThis is an email to inform you that {selected_row['Name']} from class {selected_row['Class']} {var_text} on {now.strftime('%d/%m/%Y')} at {now.strftime('%H:%M')}.\n\nThank you."
+
+                        #Write email according to format specified in email templates. Select correct file
                         if self.mode == "EarlyLeave":
-                                var_text = "has left school early"
+                                TemplateFile = open("Assets/Email Template - Early Leave.txt", "r")
                         elif self.mode == "Latecomers":
-                                var_text = "was late for school"
-                        text = f"Dear {selected_row['Name of Form Teacher 1']} and {selected_row['Name of Form Teacher 2']}, \n\nThis is an email to inform you that {selected_row['Name']} from class {selected_row['Class']} {var_text} on {now.strftime('%d/%m/%Y')} at {now.strftime('%H:%M')}.\n\nThank you."
+                                TemplateFile = open("Assets/Email Template - Latecomers.txt")
+
+                        #Format text and insert in required variables
+                        text = TemplateFile.read()
+                        text = text.format(formTeacher_one=selected_row['Name of Form Teacher 1'],\
+                                           formTeacher_two=selected_row['Name of Form Teacher 2'],\
+                                           name = selected_row['Name'],\
+                                           student_class = selected_row['Class'],\
+                                           date = now.strftime('%d/%m/%Y'),\
+                                           time = now.strftime('%H:%M'))
 
                         #Check if email has been sent successfully
                         if self.SendEmail(teachers_emails, text, name_student) == "Success":
@@ -243,13 +266,22 @@ class MainFrame ( wx.Frame ):
 
         #Function to send email
         def SendEmail(self, to_address, text, name):
+                #Get email address and password from text file
+                #Read Email Details.txt and get email address and password
+                EmailFile = open("Assets/Email Details.txt", "r")
+                EmailDetails = EmailFile.read()
+                EmailDetails = EmailDetails.split("\n")
+                EmailFile.close()
+                from_address = str(EmailDetails[0])
+                password = str(EmailDetails[1])
+                smtp_server = str(EmailDetails[2])
+            
                 #Startup the server
-                server = smtplib.SMTP('smtp.gmail.com', 587)    # To be replaced by legitimate details
+                server = smtplib.SMTP(smtp_server, 587) 
                 server.starttls()
-                server.login("cepy3testing@gmail.com", "testing777")    # To be replaced by legitimate details
+                server.login(from_address,password)
 
                 #Set Email Fields
-                from_address = "cepy3testing@gmail.com"
                 msg = MIMEMultipart()
                 msg['From'] = from_address
                 msg['To'] = ", ".join(to_address)
@@ -267,11 +299,11 @@ class MainFrame ( wx.Frame ):
                 try:
                         server.sendmail(from_address,to_address, msg.as_string())
                         return "Success"
-                except:
-                        #If fails, that means server has timed out. Restart the server.
-                        server = smtplib.SMTP('smtp.gmail.com', 587)
+                except PermissionError:
+                        #Startup the server
+                        server = smtplib.SMTP(smtp_server, 587) 
                         server.starttls()
-                        server.login("cepy3testing@gmail.com", "testing777")
+                        server.login(from_address,password)
                         
                         server.sendmail(from_address,to_address, msg.as_string())
                         return "Success"
@@ -297,17 +329,32 @@ class MainFrame ( wx.Frame ):
                         #2. Send Email to Form Teachers
                         #If student found and email had been sent successfully
                         if self.WriteEmail('Assets/Student Database.csv', nric, curr_datetime) == "Success":
-                                self.textConfirmation.SetLabel(f"Student {nric}'s data has been entered successfully into the system \nat {formatted_datetime}")
+                                self.textConfirmation.SetLabel("")
                                 self.textEmailConfirmation.SetLabel("Email has been sent successfully.")
                         #If student not found
                         else:
                                 self.textConfirmation.SetLabel("Student not found. Please try again.")
                                 self.textEmailConfirmation.SetLabel("")
+                                return
 
-                        #time.sleep(0.5)
-                        #self.textConfirmation.SetLabel("")
+                        #3. Get student's name and class from database
+                        with open("Assets/Student Database.csv", encoding='utf-8-sig') as csv_file:
+                            #Convert csv file into dictionary
+                            csv_reader = csv.DictReader(csv_file)
 
-                        #3. Open Excel file and select correct sheet according to mode
+                            selected_row = []
+
+                            for row in csv_reader:
+                                    if row["Student ID"] == nric:
+                                            selected_row = row
+                                            
+                        student_name = selected_row["Name"]
+                        student_class = selected_row["Class"]
+                        #Censor Student ID when displaying on screen
+                        censored_id = f"*****{nric[-4:]}"
+                        
+                                
+                        #4. Open Excel file and select correct sheet according to mode
                         wb = openpyxl.load_workbook(filename)
                         
                         #4. Set last empty row
@@ -321,11 +368,28 @@ class MainFrame ( wx.Frame ):
                                 latecomers_empty += 1
 
                         #5. Add data to Excel file and save
-                        #Set latest row of column A to datetime
-                        sheet['A' + str(empty)].value = formatted_datetime
-                        #Set latest row of column B to student ID
-                        sheet['B' + str(empty)].value = nric
-                        wb.save(filename)
+                        try:
+                            #Set latest row of column A to datetime
+                            sheet['A' + str(empty)].value = formatted_datetime
+                            #Set latest row of column B to student ID
+                            sheet['B' + str(empty)].value = nric
+                            #Set latest row of column C to name
+                            sheet['C' + str(empty)].value = student_name
+                            #Set latest row of column D to class
+                            sheet['D' + str(empty)].value = student_class
+                            wb.save(filename)
+
+                            #Set confirmation text
+                            self.textConfirmation.SetLabel(f"The data of student {student_name}, class {student_class} (ID: {censored_id}) \nhas been entered successfully into the system at {formatted_datetime}")
+                        except:
+                            if (self.mode == "EarlyLeave"):
+                                    earlyleave_empty -= 1
+                            elif (self.mode == "Latecomers"):
+                                    latecomers_empty -= 1
+                            #Set confirmation text
+                            self.textConfirmation.SetLabel("An error has occurred. Student's data could not be entered into the system.\nPlease close the Data Log Excel File if it's currently open and try again.")
+                        
+                            
 
         def OnQueryID( self, event ):
                 global filename, earlyleave_empty, latecomers_empty
@@ -340,10 +404,24 @@ class MainFrame ( wx.Frame ):
                         #Clear text field
                         self.textfieldStudentID.Clear()
 
-                        #2. Open Excel file and select correct sheet according to mode
+                        #2. Get student's name and class from database
+                        with open("Assets/Student Database.csv", encoding='utf-8-sig') as csv_file:
+                            #Convert csv file into dictionary
+                            csv_reader = csv.DictReader(csv_file)
+
+                            selected_row = []
+
+                            for row in csv_reader:
+                                    if row["Student ID"] == nric:
+                                            selected_row = row
+                                            
+                        student_name = selected_row["Name"]
+                        student_class = selected_row["Class"]
+
+                        #3. Open Excel file and select correct sheet according to mode
                         wb = openpyxl.load_workbook(filename)
 
-                        #3. Set last empty row
+                        #4. Set last empty row
                         if (self.mode == "EarlyLeave"):
                                 sheet = wb["Early Leave"]
                                 empty = earlyleave_empty
@@ -351,7 +429,7 @@ class MainFrame ( wx.Frame ):
                                 sheet = wb["Late"]
                                 empty = latecomers_empty
 
-                        #4. Find all data entries corresponding to that student ID
+                        #5. Find all data entries corresponding to that student ID
                         entries = []
                         #Iterate through all the rows, sheet is 1-indexed
                         for row in range(1, empty):
@@ -360,7 +438,7 @@ class MainFrame ( wx.Frame ):
                                         #Append data entry to a list
                                         entries.append(sheet['A'+str(row)].value)
 
-                        #5. Print out list
+                        #6. Print out list
                         #If list is empty, then no data entry recorded
                         if len(entries) == 0:
                                 self.textConfirmation.SetLabel("Student not found. Please try again.")
@@ -368,9 +446,9 @@ class MainFrame ( wx.Frame ):
                         #Else print out all the entries
                         else:
                                 if self.mode == "EarlyLeave":
-                                        text = f"Student {nric} has taken early leave from school on these dates:\n"
+                                        text = f"Student {student_name}, class {student_class} (ID: {nric}) \nhas taken early leave from school on these dates:\n"
                                 elif self.mode == "Latecomers":
-                                        text = f"Student {nric} has been late for school on these dates:\n"
+                                        text = f"Student {student_name}, class {student_class} (ID: {nric}) \nhas been late for school on these dates:\n"
                                 for item in entries:
                                         text += f"- {str(item)} \n"
                                 self.textConfirmation.SetLabel("Data has been retrieved successfully.")
@@ -397,6 +475,7 @@ class MainFrame ( wx.Frame ):
                         
                         #1. Get data (requested date) and set confirmation text
                         requested_date = self.textfieldStudentID.GetValue()
+                        
 
                         #Clear text field
                         self.textfieldStudentID.Clear()
@@ -406,6 +485,10 @@ class MainFrame ( wx.Frame ):
                                 self.textConfirmation.SetLabel("Date is not in specified format. Please try again.")
                                 self.textEmailConfirmation.SetLabel("")
                                 return
+                        else:
+                            #Format date into required format for comparison later (dd/mm/yyyy)
+                            #This is to solve issues in comparison such as 01/11/2018 and 1/11/2018
+                            requested_date = datetime.datetime.strptime(requested_date, "%d/%m/%Y").strftime("%d/%m/%Y")
 
                         #2. Open Excel file and select correct sheet according to mode
                         wb = openpyxl.load_workbook(filename)
@@ -420,14 +503,21 @@ class MainFrame ( wx.Frame ):
 
                         #4. Find all data entries corresponding to that date
                         entries = []
-                        #Iterate through all the rows, sheet is 1-indexed
-                        for row in range(1, empty):
-                                #If that row contains data entry corresponding to specified date
-                                curr_value = sheet['A'+str(row)].value
-                                curr_value = curr_value[0:10]   #Only retrieve dd/mm/yyyy from datetime in Excel file
-                                if curr_value == requested_date:
+                        counter = 0
+                        #Iterate through all the rows, sheet is 1-indexed, 1st row contains headers, so start on 2nd row
+                        for row in range(2, empty):
+                            
+                                #Retrieve and format date into required format for comparison (dd/mm/yyyy)
+                                curr_date = sheet['A'+str(row)].value
+                                curr_date = datetime.datetime.strptime(curr_date, "%d/%m/%Y %H:%M").strftime("%d/%m/%Y")
+
+                                #If that row contains data entry corresponding to requested date
+                                if curr_date == requested_date:
                                         #Append data entry to a list
-                                        entries.append(sheet['B'+str(row)].value)
+                                        entries.append([])
+                                        entries[counter].append(sheet['B'+str(row)].value)  #ID
+                                        entries[counter].append(sheet['C'+str(row)].value)  #Name  
+                                        entries[counter].append(sheet['D'+str(row)].value)  #Class
 
                         #5. Print out list
                         #If list is empty, then no data entry recorded
@@ -441,7 +531,87 @@ class MainFrame ( wx.Frame ):
                                 elif self.mode == "Latecomers":
                                         text = f"Students who were late on {requested_date}:\n"
                                 for item in entries:
-                                        text += f"- {str(item)} \n"
+                                        text += f"- {str(item[1])}, class {str(item[2])} (ID: {str(item[0])})\n"
+                                self.textConfirmation.SetLabel("Data has been retrieved successfully.")
+
+                                #Show Query Dialog
+                                QueryDialog(None, text).Show()
+
+        def OnQueryName( self, event ):
+                global filename, earlyleave_empty, latecomers_empty
+                if self.textfieldStudentID.GetValue() == "":
+                        self.textConfirmation.SetLabel("Name Field cannot be left blank. Please try again.")
+                        self.textEmailConfirmation.SetLabel("")
+                else:   #Run code       
+                        
+                        #1. Get data (requested name)
+                        requested_name = self.textfieldStudentID.GetValue()
+                        
+                        #Clear text field
+                        self.textfieldStudentID.Clear()
+
+                        #2. Open Excel file and select correct sheet according to mode
+                        wb = openpyxl.load_workbook(filename)
+
+                        #3. Set last empty row
+                        if (self.mode == "EarlyLeave"):
+                                sheet = wb["Early Leave"]
+                                empty = earlyleave_empty
+                        elif (self.mode == "Latecomers"):
+                                sheet = wb["Late"]
+                                empty = latecomers_empty
+
+                        #4. Find all data entries corresponding to that name
+
+                        #Format of entries: [[Name, Class, 1st data entry, 2nd data entry, ...], [Name, Class, 1st data entry, 2nd data entry, ...]]
+                        entries = []
+                        #Iterate through all the rows, sheet is 1-indexed, 1st row contains headers, so start on 2nd row
+                        for row in range(2, empty):
+
+                                #Retrieve name of student from current row
+                                curr_name = sheet['C'+str(row)].value
+
+                                #If that row contains data entry corresponding to requested name, then add required data
+                                if requested_name in curr_name:
+
+                                        #Check if current name is already inputted in
+                                        for curr_row in entries:
+
+                                                #curr_row[0] refers to name stored in row that is currently being accessed
+                                                #If there exists a list within list of lists that already contains data about current name
+                                                if curr_row[0] == curr_name:
+
+                                                        #Add data entry to current row
+                                                        curr_row.append(sheet['A'+str(row)].value)  #Date & Time
+                                                        break
+                                        else:   #If for loop ran without breaking, means requested name is not currently found in entries
+                                                #Then, create a new list within list of lists
+                                                #Append data entry to a list
+                                                entries.append([sheet['C'+str(row)].value, sheet['D'+str(row)].value, sheet['A'+str(row)].value ])  #Name, Class, Date & TIme
+                                                
+                                                continue    #Continue with next cycle of iteration through rows of Excel file
+
+                                        
+                                        
+                        #Sort list of entries (By class)
+                        entries.sort(key=lambda x: x[1])    #Sort by second element, class
+
+                        
+                        #5. Print out list
+                        #If list is empty, then no data entry recorded
+                        if len(entries) == 0:
+                                self.textConfirmation.SetLabel("No entries for specified student. Please try again.")
+                                self.textEmailConfirmation.SetLabel("")
+                        #Else print out all the entries
+                        else:
+                                if self.mode == "EarlyLeave":
+                                        text = f"Students who contain the name '{requested_name}' and took early leave:\n"
+                                elif self.mode == "Latecomers":
+                                        text = f"Students who contain the name '{requested_name}' and were late for school:\n"
+                                for row in entries:
+                                        text += f"\n{row[0]}, class {row[1]}:\n"  #Add header for each unique student
+                                        for item in range(2, len(row)):
+                                                text += f"- {str(row[item])}\n" #Add individual date & time data entries under each student's header
                                 self.textConfirmation.SetLabel("Data has been retrieved successfully.")
 
                                 #Show Query Dialog
@@ -511,7 +681,7 @@ class MainFrame ( wx.Frame ):
                 #Set mode as "EarlyLeave"
                 self.mode = "EarlyLeave"
 
-                #Change title to "Early Leave: Query by Student ID"
+                #Change title to "Early Leave: Query by Date"
                 self.textTitle.SetLabel("Early Leave:\nQuery by Date")
 
                 #Change instructions text
@@ -524,6 +694,24 @@ class MainFrame ( wx.Frame ):
 
                 #Rebind submit button to query date function
                 self.buttonSubmit.Bind( wx.EVT_BUTTON, self.OnQueryDate )
+
+        def OnEarlyLeaveQueryName( self, event ):
+                #Set mode as "EarlyLeave"
+                self.mode = "EarlyLeave"
+
+                #Change title to "Early Leave: Query by Name"
+                self.textTitle.SetLabel("Early Leave:\nQuery by Name")
+
+                #Change instructions text
+                self.textEnterStudentID.SetLabel("Enter Name of Student Below:")
+                
+                #Fix layout
+                self.textConfirmation.SetLabel("")
+                self.textEmailConfirmation.SetLabel("")
+                self.Layout()
+
+                #Rebind submit button to query date function
+                self.buttonSubmit.Bind( wx.EVT_BUTTON, self.OnQueryName )
         
         def OnLatecomers( self, event ):
                 #Set mode as "Latecomers" 
@@ -578,6 +766,24 @@ class MainFrame ( wx.Frame ):
 
                 #Rebind submit button to query date function
                 self.buttonSubmit.Bind( wx.EVT_BUTTON, self.OnQueryDate )
+
+        def OnLatecomersQueryName( self, event ):
+                #Set mode as "Latecomers"
+                self.mode = "Latecomers"
+
+                #Change title to "Latecomers: Query by Name"
+                self.textTitle.SetLabel("Latecomers:\nQuery by Name")
+
+                #Change instructions text
+                self.textEnterStudentID.SetLabel("Enter Name of Student Below:")
+
+                #Fix layout
+                self.textConfirmation.SetLabel("")
+                self.textEmailConfirmation.SetLabel("")
+                self.Layout()
+
+                #Rebind submit button to query date function
+                self.buttonSubmit.Bind( wx.EVT_BUTTON, self.OnQueryName )
         
 
 ###########################################################################
@@ -672,36 +878,25 @@ class HelpDialog ( wx.Dialog ):
 class UpdateLogDialog ( wx.Dialog ):
         
         def __init__( self, parent ):
-                wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Help", pos = wx.DefaultPosition, size = wx.Size( 500,500 ), style = wx.DEFAULT_DIALOG_STYLE )
+                wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Help", pos = wx.DefaultPosition, size = wx.Size( 750,500 ), style = wx.DEFAULT_DIALOG_STYLE )
                 
                 self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
-                
-                bSizerUpdateLog = wx.BoxSizer( wx.VERTICAL )
-                
-                self.textUpdateLogTitle = wx.StaticText( self, wx.ID_ANY, u"Update Log", wx.DefaultPosition, wx.Size( -1,-1 ), 0 )
-                self.textUpdateLogTitle.Wrap( -1 )
-                self.textUpdateLogTitle.SetFont( wx.Font( 15, 70, 90, 92, False, wx.EmptyString ) )
-                
-                bSizerUpdateLog.Add( self.textUpdateLogTitle, 0, wx.ALIGN_LEFT|wx.ALL, 15 )
 
                 #Read Update Log.txt and add it to the dialog
                 UpdateLog = open("Assets/Update Log.txt", "r")
                 text = UpdateLog.read()
                 UpdateLog.close()
                 
-                self.textUpdateLog = wx.StaticText( self, wx.ID_ANY, text, wx.DefaultPosition, wx.DefaultSize, 0 )
-                self.textUpdateLog.Wrap( -1 )
-                bSizerUpdateLog.Add( self.textUpdateLog, 0, wx.ALIGN_LEFT|wx.ALL, 10 )
-                
-                
-                self.SetSizer( bSizerUpdateLog )
+                #Setup panel
+                self.panel = ScrollPanel(self, "Update Log", text)
+
+                #Put panel into box sizer and display the panel
+                bSizerUpdateLog = wx.BoxSizer( wx.VERTICAL )
+                bSizerUpdateLog.Add(self.panel, 1, wx.EXPAND, 10)
+
+                self.SetSizer(bSizerUpdateLog)
                 self.Layout()
                 
-                #Added self.Fit()
-                self.Fit()
-                
-                self.Centre( wx.BOTH )
-        
         def __del__( self ):
                 pass
 
@@ -780,7 +975,7 @@ class QueryDialog ( wx.Dialog ):
                 self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
 
                 #Setup panel
-                self.panel = QueryPanel(self, text)
+                self.panel = ScrollPanel(self, "Query Info", text)
 
                 #Put panel into box sizer and display the panel
                 bSizerQueryDialog = wx.BoxSizer( wx.VERTICAL )

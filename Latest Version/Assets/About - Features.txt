@@ -5,3 +5,4 @@ Features:
 - Function "Set Filename" - Allows user to specify name of Excel Workbook to store data in
 - Query By Date: Displays all entries of a specified date
 - Query By Student ID: Displays all data corresponding to the specified Student ID
+- Query By Name: Displays all data entries of students who contain the specified name
