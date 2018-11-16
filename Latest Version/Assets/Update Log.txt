@@ -1,3 +1,9 @@
+v1.9
+- Added "Reason" Field to Data Log file
+- Included reason that student took early leave / was late for school 
+  into the email that is sent to the form teachers
+- Shrunk general size of interface
+
 v1.8
 - Added email details in a separate, locally stored file
 - Added name and class fields to data log file

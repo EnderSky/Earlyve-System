@@ -1,5 +1,6 @@
 Dear {formTeacher_one} and {formTeacher_two},
 
 This is an email to inform you that {name} from class {student_class} was late for school on {date} at {time}.
+The reason the student gave for his latecoming is '{reason}'.
 
 Thank you.

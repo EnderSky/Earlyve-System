@@ -1,5 +1,6 @@
 Dear {formTeacher_one} and {formTeacher_two},
 
 This is an email to inform you that {name} from class {student_class} has left school early on {date} at {time}.
+The reason the student gave for leaving school early is '{reason}'.
 
 Thank you.
