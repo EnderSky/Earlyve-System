@@ -1,3 +1,6 @@
+v1.10
+- Now displays "Reason" Field when querying data
+
 v1.9
 - Added "Reason" Field to Data Log file
 - Included reason that student took early leave / was late for school 
