@@ -15,4 +15,4 @@ Tracks students who take early leave from school or are late for school.
 
 ## How to Run
 1. Open the Folder containing the project "Earlyve-System-master" followed by "Latest Version".
-2. Double click the EarlyveSystem Python File
+2. Double click the EarlyveSystemApp application and you're good to go!

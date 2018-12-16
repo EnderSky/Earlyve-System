@@ -1,3 +1,7 @@
+v1.11
+- Fixed a bug which occurred when querying data using a non-existent student ID
+- Compiled python file into exe file
+
 v1.10
 - Now displays "Reason" Field when querying data
 
