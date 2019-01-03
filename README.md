@@ -22,9 +22,7 @@ Change the email details to the email which you will be using for this program.
 The format for that text file is as follows:
 
 (Email address)
-
 (Password)
-
 (smtp email server)
 
 3. Ensure that the student database is saved as "Student Database.csv"
