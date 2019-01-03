@@ -16,6 +16,7 @@ Tracks students who take early leave from school or are late for school.
 1. Always ensure that the application is in the "Latest Version" folder, together with the "Assets" folder.
 
 2. Navigate to the "Assets" folder, followed by "Email Details.txt". 
+
 Change the email details to the email which you will be using for this program.
 The format for that text file is as follows:
 (Email address)
