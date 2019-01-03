@@ -18,9 +18,13 @@ Tracks students who take early leave from school or are late for school.
 2. Navigate to the "Assets" folder, followed by "Email Details.txt". 
 
 Change the email details to the email which you will be using for this program.
+
 The format for that text file is as follows:
+
 (Email address)
+
 (Password)
+
 (smtp email server)
 
 3. Ensure that the student database is saved as "Student Database.csv"
@@ -30,6 +34,7 @@ The format for that text file is as follows:
 5. Ensure that all the required variables in the "Email Template" files (denoted by the curly brackets "{}") are present.
 
 The format of the email can be changed within the corr as long as the required variables are present.
+
 List of Required Variables:
 - {formTeacher_one} --> Name of first form teacher
 - {formTeacher_two} --> Name of second form teacher
