@@ -1,3 +1,6 @@
+v1.13
+- Removed 'f' (format) strings to make app compatible in Python 3.5
+
 v1.12
 - Updated README to include clearer instructions
 - Changed all NRIC / student ID variables to uppercase for standardisation
