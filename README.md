@@ -14,6 +14,7 @@ Tracks students who take early leave from school or are late for school.
 
 ## How to Operate
 1. Always ensure that the application is in the "Latest Version" folder, together with the "Assets" folder.
+
 2. Navigate to the "Assets" folder, followed by "Email Details.txt". 
 
 Change the email details to the email which you will be using for this program.
@@ -25,14 +26,16 @@ The format for that text file is as follows:
 (Password)
 
 (smtp email server)
+
 3. Ensure that the student database is saved as "Student Database.csv"
+
 4. Ensure that the log file is saved as "Data Log.xlsx"
+
 5. Ensure that all the required variables in the "Email Template" files (denoted by the curly brackets "{}") are present.
 
 The format of the email can be changed within the corr as long as the required variables are present.
 
 List of Required Variables:
-
 - {formTeacher_one} --> Name of first form teacher
 - {formTeacher_two} --> Name of second form teacher
 - {name} --> Name of student
