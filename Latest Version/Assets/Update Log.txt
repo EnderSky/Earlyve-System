@@ -1,5 +1,6 @@
 v1.13
 - Removed 'f' (format) strings to make app compatible in Python 3.5
+- Updated app icon
 
 v1.12
 - Updated README to include clearer instructions

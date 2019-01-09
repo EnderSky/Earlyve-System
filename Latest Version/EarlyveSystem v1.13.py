@@ -383,11 +383,10 @@ class MainFrame ( wx.Frame ):
                     wb.save(filename)
 
                     #Set confirmation text
-                    self.textConfirmation.SetLabel("The data of student {name}, class {student_class} (ID: {censored_id}) \n\
-                                                    has been entered successfully into the system at {formatted_datetime}".format(name=student_name,\
-                                                                                                                                  student_class=student_class,\
-                                                                                                                                  censored_id=censored_id,\
-                                                                                                                                  formatted_datetime=formatted_datetime))
+                    self.textConfirmation.SetLabel("The data of student {name}, class {student_class} (ID: {censored_id}) \nhas been entered successfully into the system at {formatted_datetime}".format(name=student_name,\
+                                                                                                                                                                                                          student_class=student_class,\
+                                                                                                                                                                                                          censored_id=censored_id,\
+                                                                                                                                                                                                          formatted_datetime=formatted_datetime))
                 except:
                     #Reset counter to prevent creation of gaps
                     if (self.mode == "EarlyLeave"):
@@ -606,7 +605,7 @@ class MainFrame ( wx.Frame ):
 
                                                 #curr_row[0] refers to name stored in row that is currently being accessed
                                                 #If there exists a list within list of lists that already contains data about current name
-                                                if curr_row[0].upper() == curr_name:
+                                                if curr_row[0] == curr_name:
 
                                                         #Add data entry to current row
                                                         #Data Format: Date & Time       (Reason: _______)
