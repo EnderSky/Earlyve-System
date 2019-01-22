@@ -9,8 +9,6 @@ Tracks students who take early leave from school or are late for school.
 1. Download Python 3.7.0 from www.python.org
 2. Download the required files from this Github Repository by clicking "Download" and "Download ZIP"
 3. Right-click the ZIP Folder and select "Extract All"
-4. Open Command Prompt
-5. Copy and Paste this line into Command Prompt: _pip3 install openpyxl wxpython --user_
 
 ## How to Operate
 1. Always ensure that the application is in the "Latest Version" folder, together with the "Assets" folder.
@@ -47,3 +45,9 @@ List of Required Variables:
 1. Open the Folder containing the project "Earlyve-System-master" followed by "Latest Version".
 2. Double click the EarlyveSystemApp application and you're good to go!
 3. Press "Home" followed by "Help" on the menu bar to understand how to utilise this program.
+
+## How to Edit
+1. Open Command Prompt
+2. cd into Earlyve-System folder
+3. Enter this line into Command Prompt: _pip install -r requirements.txt --user_
+4. After downloading the required libraries, edit the python file!
